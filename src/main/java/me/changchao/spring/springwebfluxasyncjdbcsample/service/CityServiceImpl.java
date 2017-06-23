@@ -30,7 +30,12 @@ class CityServiceImpl implements CityService {
 				.defer(() -> Mono.just(this.cityRepository.findByNameAndCountryAllIgnoringCase(name, country)))
 				.subscribeOn(jdbcScheduler);
 
-		return city2;
+		// https://spring.io/blog/2016/07/20/notes-on-reactive-programming-part-iii-a-simple-http-server-application
+		Mono<City> city3 = Mono
+				.fromCallable(() -> this.cityRepository.findByNameAndCountryAllIgnoringCase(name, country))
+				.subscribeOn(jdbcScheduler);
+
+		return city3;
 	}
 
 	@Override
