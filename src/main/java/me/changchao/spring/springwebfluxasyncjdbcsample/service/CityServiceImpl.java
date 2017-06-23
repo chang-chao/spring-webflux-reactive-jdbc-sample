@@ -21,10 +21,16 @@ class CityServiceImpl implements CityService {
 
 	@Override
 	public Mono<City> getCity(String name, String country) {
+		// city or city2,which is the better way?
 		Mono<City> city = Mono
 				.fromCallable(() -> this.cityRepository.findByNameAndCountryAllIgnoringCase(name, country))
 				.publishOn(jdbcScheduler);
-		return city;
+
+		Mono<City> city2 = Mono
+				.defer(() -> Mono.just(this.cityRepository.findByNameAndCountryAllIgnoringCase(name, country)))
+				.subscribeOn(jdbcScheduler);
+
+		return city2;
 	}
 
 	@Override
