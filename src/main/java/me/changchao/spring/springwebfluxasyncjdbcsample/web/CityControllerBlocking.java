@@ -2,37 +2,42 @@ package me.changchao.spring.springwebfluxasyncjdbcsample.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.changchao.spring.springwebfluxasyncjdbcsample.domain.City;
-import me.changchao.spring.springwebfluxasyncjdbcsample.service.CityService;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import me.changchao.spring.springwebfluxasyncjdbcsample.service.CityRepository;
 
 @Controller
-
-public class CityController {
+public class CityControllerBlocking {
 	@Autowired
-	private CityService cityService;
+	private CityRepository cityRepository;
 
 	@GetMapping("/search")
 	@ResponseBody
-	public Mono<City> searchOne() {
-		return this.cityService.getCity("Bath", "UK");
+	public City searchOne() {
+		return cityRepository.findByNameAndCountryAllIgnoringCase("Bath", "UK");
 	}
 
 	@GetMapping("/")
 	@ResponseBody
-	public Flux<City> list() {
-		return this.cityService.findAll();
+	public Iterable<City> list() {
+		return cityRepository.findAll();
 	}
 
 	@GetMapping("/add")
 	@ResponseBody
-	public Mono<Long> add() {
+	@Transactional
+	public Long add() {
 		String name = "city:" + Math.random();
 		String country = "country:" + Math.random();
-		return this.cityService.add(name, country).map(city -> city.getId());
+
+		City city = new City(name, country);
+		city.setState("state");
+		city.setMap("map");
+		City savedCity = cityRepository.save(city);
+
+		return savedCity.getId();
 	}
 }
