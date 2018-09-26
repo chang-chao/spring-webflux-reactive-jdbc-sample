@@ -8,12 +8,14 @@ A simple `city` table which consists of `id`(auto-generated pk), `country` and `
 
 ## Blocking version
 | URL                           | functionality                                               |
+| ----------------------------- |:-----------------------------------------------------------:|
 | http://localhost:8080/        | list all cities                                             |
 | http://localhost:8080/one     | get one city(for simplicity, a fixed city is queried)       |
 | http://localhost:8080/add     | add a city with a random name                               |
 
 ## Non-blocking version.
 | URL                              | functionality                                               |
+| -------------------------------- |:-----------------------------------------------------------:|
 | http://localhost:8080/rx/        | list all cities                                             |
 | http://localhost:8080/rx/one     | get one city(for simplicity, a fixed city is queried)       |
 | http://localhost:8080/rx/add     | add a city with a random name                               |
