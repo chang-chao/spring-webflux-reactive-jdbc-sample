@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.changchao.spring.springwebfluxasyncjdbcsample.domain.City;
 import me.changchao.spring.springwebfluxasyncjdbcsample.service.CityService;
+import net.bytebuddy.utility.RandomString;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -17,7 +18,7 @@ public class CityControllerRx {
 	@Autowired
 	private CityService cityService;
 
-	@GetMapping("/search")
+	@GetMapping("/one")
 	@ResponseBody
 	public Mono<City> searchOne() {
 		return this.cityService.getCity("Bath", "UK");
@@ -32,8 +33,9 @@ public class CityControllerRx {
 	@GetMapping("/add")
 	@ResponseBody
 	public Mono<Long> add() {
-		String name = "city:" + Math.random();
-		String country = "country:" + Math.random();
+		// To keep the sample simple, we just create a city with a random name.
+		String name = RandomString.make(10);
+		String country = "USA";
 		return this.cityService.add(name, country).map(city -> city.getId());
 	}
 }

@@ -48,8 +48,6 @@ class CityServiceImpl implements CityService {
 	public Mono<City> add(String name, String country) {
 		return Mono.fromCallable(() -> transactionTemplate.execute(status -> {
 			City city = new City(name, country);
-			city.setState("state");
-			city.setMap("map");
 			City savedCity = cityRepository.save(city);
 			return savedCity;
 		})).subscribeOn(jdbcScheduler);
