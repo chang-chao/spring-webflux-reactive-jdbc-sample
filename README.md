@@ -1,4 +1,4 @@
-# spring-webflux-async-jdbc-sample
+# spring-webflux-reactive-jdbc-sample
 This is an example program for demonstrating How do we integrate the inherently blocking JDBC API to the world of reactive programming.
 
 The point is to have a dedicated, well-tuned thread pool and isolate the blocking code there.
